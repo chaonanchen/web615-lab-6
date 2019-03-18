@@ -8,6 +8,7 @@ for i in 1..6
     for j in 1..6
       @article = Article.new
       @article.title = "Will #{Faker::Company.name} really #{Faker::Company.bs}?"
+      @article.user = @user
       paragraph_1 = Faker::Lorem.paragraphs.join(' ')
       paragraph_2 = Faker::Lovecraft.paragraphs.join(' ')
       paragraph_3 = Faker::Hipster.paragraphs.join(' ')
@@ -18,6 +19,7 @@ for i in 1..6
         for ii in 1..6
           @comment = Comment.new
           @comment.article = @article
+          @comment.user = @user
           @comment.message = Faker::Hacker.say_something_smart
           if @comment.save
             p "Comment #{ii} has been saved for article #{@article.title}"
