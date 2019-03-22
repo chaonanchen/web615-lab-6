@@ -18,10 +18,10 @@
 #
 
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show]
 
   # GET /users
-  # GET /users.json
+  # GET /users.json :per_page => params[:per_page] ||= 30)
   def index
     @users = User.paginate(:page => params[:page], :per_page => params[:per_page] ||= 30)
   end
@@ -29,24 +29,15 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-  end
 
-
-  # DELETE /users/1
-  # DELETE /users/1.json
-  def destroy
-    @user.destroy
-    respond_to do |format|
-      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
-      format.json { head :no_content }
-    end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
+      begin
       @user = User.find(params[:id])
-      rescue ActiveRecord::RecordNotFound
+      rescue
       flash[:alert] = "The user you're looking for can not be found"
       respond_to do |format|
         format.html{
@@ -58,9 +49,5 @@ class UsersController < ApplicationController
         }
       end
     end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def user_params
-      params.fetch(:user, {})
-    end
+end
 end
